@@ -33,7 +33,7 @@ class Signup extends Component {
                 <View style={styles.goRegister}>
                     <TouchableHighlight style={styles.customButtonStyle} onPress={ () => this.goToSignin() } underlayColor={ 'rgba( 275, 275, 275, 0.9 )' }>
                         <Text style={{ fontSize: 15, color: 'white', textDecorationLine: 'underline' }}>
-                            I don't have an account
+                            I already have an account
                         </Text>
                     </TouchableHighlight>
                 </View>

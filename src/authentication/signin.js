@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, Dimensions, TouchableHighlight } from 'react-native';
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
+import Firebase from 'firebase';
 
 var width = Dimensions.get('window').width;
 
 class Signin extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            username: '',
+            password: ''
+        }
     }
     render(){
         return(
@@ -16,11 +21,13 @@ class Signin extends Component {
                     <TextInput
                         placeholder={"Username"}
                         marginBottom={10}
+                        onChangeText={ (e) => { this.setState({ username: e }) } }
                     />
                     <TextInput
                         placeholder={"Password"}
                         marginBottom={30}
                         secureTextEntry={ true }
+                        onChangeText={ (e) => { this.setState({ password: e }) } }
                     />
                     <Button
                         text={'Sign in'}

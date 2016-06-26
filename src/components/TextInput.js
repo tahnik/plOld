@@ -20,6 +20,7 @@ class customTextInput extends Component {
                 ]}>
                 <TextInput
                     placeholder={this.props.placeholder}
+                    onChangeText={ (e) => this.props.onChangeText(e) }
                     style={styles.customTextInputStyle}
                     secureTextEntry={ ( typeof this.props.secureTextEntry === 'undefined' ?  customSecureTextEntry : this.props.secureTextEntry ) }
                 />

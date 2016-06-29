@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, Dimensions, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, TouchableHighlight, Alert, ActivityIndicator } from 'react-native';
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
 import Firebase from 'firebase';
@@ -11,7 +11,8 @@ class Signin extends Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            loading: false
         }
     }
     render(){
@@ -30,7 +31,7 @@ class Signin extends Component {
                         onChangeText={ (e) => { this.setState({ password: e }) } }
                     />
                     <Button
-                        text={'Sign in'}
+                        text={this.state.loading ? 'loading...' : 'Sign in'}
                         onPress={ () => this.signIn() }
                     />
                 </View>
@@ -46,7 +47,42 @@ class Signin extends Component {
         )
     }
     signIn() {
-        //
+        this.setState({
+            loading: true
+        })
+        var username = this.state.username;
+        var password = this.state.password;
+        var formBody = 'username=' + username + '&' + 'password=' + password;
+        fetch('https://piracyleak.com/authenticate', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formBody
+        })
+        .then((response) => response.json())
+        .then((responseText) => {
+            if(typeof responseText.token === 'undefined'){
+                this.setState({
+                    loading: false
+                })
+                Alert.alert(
+                    'Wrong Username or Password',
+                    '',
+                    [
+                        {text: 'Try Again'},
+                        {text: 'Sign up', onPress: () => this.goToRegister() }
+                    ]
+                )
+            }else{
+                this.props.setToken(responseText.token, responseText.username);
+            }
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
+
     }
     goToRegister() {
         this.props.navigator.push( { name: 'signup' } )

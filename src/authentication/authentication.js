@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, Dimensions, TouchableHighlight, Navigator } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, TouchableHighlight, Navigator, Alert, AsyncStorage } from 'react-native';
 import Signin from './signin';
 import Signup from './signup';
 
@@ -28,20 +28,30 @@ class Authentication extends Component {
                     initialRoute={{ name: 'signin' }}
                     renderScene={(route, navigator) => this.navigate(route,navigator)}
                     style={{ flex: 7 }}
-                    configureScene={() => Navigator.SceneConfigs.HorizontalSwipeJump }
+                    configureScene={() => Navigator.SceneConfigs.PushFromRight }
                     />
             </View>
         )
     }
     navigate(route, navigator){
         var ComponentToNavigate = AUTH_ROUTES[route.name];
+        if(route.name == 'signin' || route.name == 'signup'){
+            return <ComponentToNavigate title={route.name} navigator={navigator} setToken={ (token, username) => this.goToHome(token, username) } />
+        }
         return <ComponentToNavigate title={route.name} navigator={navigator}/>
     }
-    goToRegister() {
-        this.props.navigator.push( { name: 'signup' } )
+    goToHome(token, username) {
+        let tokenStorage = {
+            token: token,
+            username: username
+        };
+        AsyncStorage.setItem('tokenStorage', JSON.stringify(tokenStorage));
+        this.props.setToken(token, username);
+        this.props.navigator.immediatelyResetRouteStack([
+            {name: 'home'}
+        ])
     }
 }
-
 var styles = StyleSheet.create({
     container: {
         flex: 1,

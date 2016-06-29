@@ -4,6 +4,7 @@ import { AppRegistry, TouchableHighlight, View, StyleSheet, Dimensions,Text } fr
 var width = Dimensions.get('window').width;
 var customMarginBottom = 10;
 var customWidth = width * 0.7;
+var customMargintop = 0;
 
 class customButton extends Component {
     constructor(props) {
@@ -15,7 +16,9 @@ class customButton extends Component {
                 style={[
                     styles.customButtonStyle, {
                         marginBottom: (typeof this.props.marginBottom === 'undefined' ?  customMarginBottom : this.props.marginBottom),
-                        width: (typeof this.props.width === 'undefined' ?  customWidth : this.props.width )
+                        width: (typeof this.props.width === 'undefined' ?  customWidth : this.props.width ),
+                        marginTop: (typeof this.props.marginTop === 'undefined' ?  customMargintop : this.props.marginTop),
+                        backgroundColor: (typeof this.props.backgroundColor === 'undefined' ?  '#0071BC' : this.props.backgroundColor)
                     }
                 ]}
                 onPress={ () => this.props.onPress() }
@@ -33,7 +36,6 @@ var styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#0071BC',
         height: 45
     }
 })

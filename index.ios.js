@@ -1,23 +1,93 @@
 import React, { Component } from 'react';
-import { AppRegistry, Navigator } from 'react-native';
-import Authentication from './src/authentication/authentication'
+import { AppRegistry, Navigator, AsyncStorage, View, Text } from 'react-native';
+import Authentication from './src/authentication/authentication';
+import Home from './src/home/home_controller';
+
+var TOKEN = '';
+var USERNAME = '';
 
 var ROUTES = {
-    authentication: Authentication
+    authentication: Authentication,
+    home: Home
 }
 
 class main extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            initialRoute: null
+        }
+        this.checkToken();
+    }
     render() {
+        if(this.state.initialRoute === null){
+            return(
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text>
+                        loading...
+                    </Text>
+                </View>
+            )
+        }
         return (
             <Navigator
-                initialRoute={{ name: 'authentication' }}
+                initialRoute={{ name: this.state.initialRoute }}
                 renderScene={(route, navigator) => this.navigate(route,navigator)}
                 />
         )
     }
     navigate(route, navigator){
         var ComponentToNavigate = ROUTES[route.name];
+        if(route.name == 'authentication'){
+            return <ComponentToNavigate title={route.name} navigator={navigator} setToken={ (token, username) => this.setToken(token, username) } />
+        }
+        if(route.name == 'home') {
+            return <ComponentToNavigate title={route.name} navigator={navigator} Token={ TOKEN } Username={ USERNAME }/>
+        }
         return <ComponentToNavigate title={route.name} navigator={navigator} />
+    }
+    checkToken() {
+        AsyncStorage.getItem('tokenStorage', (err, result) => {
+            if(result !== null){
+                storageData = JSON.parse(result);
+                var formBody = 'username=' + storageData.username + '&' + 'token=' + storageData.token;
+                fetch('https://piracyleak.com/user', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formBody
+                })
+                .then((response) => response.json())
+                .then((responseText) => {
+                    if(typeof responseText.name !== 'undefined'){
+                        TOKEN = storageData.token;
+                        USERNAME = storageData.username;
+                        this.setState({
+                            initialRoute: 'home'
+                        })
+                    }else{
+                        this.setState({
+                            initialRoute: 'authentication'
+                        })
+                    }
+                })
+                .catch((error) => {
+                    console.warn(error);
+                });
+            }else{
+                this.setState({
+                    initialRoute: 'authentication'
+                })
+            }
+        });
+    }
+    setToken(token, username) {
+        if(token){
+             TOKEN = token;
+             USERNAME = username;
+        }
     }
 }
 

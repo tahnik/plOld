@@ -6,6 +6,14 @@ import Button from '../components/Button';
 var width = Dimensions.get('window').width;
 
 class Signup extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: '',
+            password: '',
+            confirmPassword: ''
+        }
+    }
     render(){
         return(
             <View style={styles.container}>
@@ -13,16 +21,19 @@ class Signup extends Component {
                     <TextInput
                         placeholder={"Username"}
                         marginBottom={10}
+                        onChangeText={ (e) => { this.setState({ username: e }) } }
                     />
                     <TextInput
                         placeholder={"Password"}
                         marginBottom={10}
                         secureTextEntry={ true }
+                        onChangeText={ (e) => { this.setState({ password: e }) } }
                     />
                     <TextInput
                         placeholder={"Confirm Password"}
                         marginBottom={30}
                         secureTextEntry={ true }
+                        onChangeText={ (e) => { this.setState({ confirmPassword: e }) } }
                     />
                     <Button
                         text={'Sign up'}
@@ -44,7 +55,32 @@ class Signup extends Component {
         this.props.navigator.pop();
     }
     signUp() {
-        console.log("Hey");
+        var username = this.state.username;
+        var password = '';
+        if( this.state.password == this.state.confirmPassword ){
+            password = this.state.password;
+        }else{
+            console.log("Password doesn't match");
+        }
+
+        var formBody = 'username=' + username + '&' + 'password=' + password;
+        fetch('https://piracyleak.com/signup', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formBody
+        })
+        .then((response) => response.json())
+        .then((responseText) => {
+            if (responseText.success){
+                this.props.setToken(responseText.token, responseText.username);
+            }
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
     }
 }
 

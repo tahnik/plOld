@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, Navigator, AsyncStorage, View, Text } from 'react-native';
+import { AppRegistry, Navigator, AsyncStorage, View, Text, Alert, StatusBar } from 'react-native';
 import Authentication from './src/authentication/authentication';
 import Home from './src/home/home_controller';
 
@@ -30,10 +30,15 @@ class main extends Component {
             )
         }
         return (
-            <Navigator
-                initialRoute={{ name: this.state.initialRoute }}
-                renderScene={(route, navigator) => this.navigate(route,navigator)}
-                />
+            <View style={{ flex: 1 }}>
+                <StatusBar
+                    hidden={ true }
+                    />
+                <Navigator
+                    initialRoute={{ name: this.state.initialRoute }}
+                    renderScene={(route, navigator) => this.navigate(route,navigator)}
+                    />
+            </View>
         )
     }
     navigate(route, navigator){
@@ -74,7 +79,14 @@ class main extends Component {
                     }
                 })
                 .catch((error) => {
-                    console.warn(error);
+                    Alert.alert(
+                        'No internet connection',
+                        '',
+                        [
+                            {text: 'Try Again', onPress: () => this.checkToken()},
+                            {text: 'Quit', onPress: () => this.goToRegister() }
+                        ]
+                    )
                 });
             }else{
                 this.setState({

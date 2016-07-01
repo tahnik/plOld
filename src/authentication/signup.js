@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, Dimensions, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, TouchableHighlight, Alert } from 'react-native';
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
 
@@ -60,7 +60,36 @@ class Signup extends Component {
         if( this.state.password == this.state.confirmPassword ){
             password = this.state.password;
         }else{
-            console.log("Password doesn't match");
+            Alert.alert(
+                'Password Doesn\'t Match',
+                '',
+                [
+                    {text: 'Try Again' }
+                ]
+            )
+            return;
+        }
+
+        if( this.state.password.length < 6 ){
+            Alert.alert(
+                'Password must be at least 6 characters long',
+                '',
+                [
+                    {text: 'Try Again' }
+                ]
+            )
+            return;
+        }
+
+        if( this.state.username.length < 4 ){
+            Alert.alert(
+                'Username must be at least 4 characters long',
+                '',
+                [
+                    {text: 'Try Again' }
+                ]
+            )
+            return;
         }
 
         var formBody = 'username=' + username + '&' + 'password=' + password;
@@ -76,10 +105,24 @@ class Signup extends Component {
         .then((responseText) => {
             if (responseText.success){
                 this.props.setToken(responseText.token, responseText.username);
+            }else{
+                Alert.alert(
+                    'Username already exists',
+                    '',
+                    [
+                        {text: 'Try Again'}
+                    ]
+                )
             }
         })
         .catch((error) => {
-            console.warn(error);
+            Alert.alert(
+                'Something went wrong. Please try again',
+                '',
+                [
+                    {text: 'Try Again'}
+                ]
+            )
         });
     }
 }

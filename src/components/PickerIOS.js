@@ -10,10 +10,12 @@ class customButton extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalVisible: false
+            modalVisible: false,
+            buttonText: ''
         }
     }
     render() {
+        console.log(this.props.selectedMovie)
         return (
             <View>
                 <Modal
@@ -25,9 +27,7 @@ class customButton extends Component {
                     <Picker
                         selectedValue={ this.props.selectedMovie }
                         onValueChange={(movie) => this.props.selectMovie(movie) }>
-                        { this.props.list.map((e) => (
-                            <Picker.Item key={e.label} label={e.label} value={e.value} />
-                        ))}
+                        { this.props.list.map((e) => ( <Picker.Item key={e.id} label={e.value} value={e.id - 1} /> ))}
                     </Picker>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <TouchableHighlight onPress={ () => this.setModalVisible(false) }  underlayColor={ 'rgba( 0, 0, 0, 0.5 )' }  style={{ marginTop: 5, width: width * 0.5, height: 40, backgroundColor: 'rgba(0, 0, 0, 0.3)', justifyContent: 'center' }} >
@@ -42,7 +42,7 @@ class customButton extends Component {
                 <TouchableHighlight onPress={ () => this.setModalVisible(true) } underlayColor={ 'rgba( 0, 0, 0, 0.5 )' }  style={ styles.select } >
                     <View style={{ justifyContent: 'center' }}>
                         <Text style={{ marginLeft: 10, fontSize: 18 }}>
-                            { this.props.buttonText }
+                            { this.props.list.length > 1 ? this.props.list[this.props.selectedMovie].value : console.log() }
                         </Text>
                         <Image
                             style={ styles.camera }

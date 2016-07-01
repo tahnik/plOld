@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, Navigator, View, Text, TouchableHighlight, StyleSheet, AsyncStorage, Dimensions } from 'react-native';
+import { AppRegistry, Navigator, View, Text, TouchableOpacity, StyleSheet, AsyncStorage, Dimensions, ScrollView } from 'react-native';
 import Authentication from '../authentication/authentication';
 import Home from '../home/home';
 import CreateLeak from '../home/leak';
@@ -16,27 +16,27 @@ class Home_controller extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentRoute: 'createLeak',
+            currentRoute: 'home',
             drawerOpen: false        }
     }
     render() {
         var navigationView = (
             <View style={{flex: 1, backgroundColor: '#fff', paddingTop: 20}}>
-                <TouchableHighlight onPress={() => this.goToHome() } style={ styles.drawerButton }>
+                <TouchableOpacity onPress={() => this.goToHome() } style={ styles.drawerButton }>
                     <Text style={{ fontSize: 15 }}>
                         Recent leaks
                     </Text>
-                </TouchableHighlight>
-                <TouchableHighlight onPress={() => this.goToLeak() } style={ styles.drawerButton }>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.goToLeak() } style={ styles.drawerButton }>
                     <Text style={{ fontSize: 15 }}>
                         Create a leak
                     </Text>
-                </TouchableHighlight>
-                <TouchableHighlight onPress={() => this.logOut() } style={ styles.drawerButton }>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.logOut() } style={ styles.drawerButton }>
                     <Text style={{ fontSize: 15 }}>
                         Logout
                     </Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
             </View>
         );
         return (
@@ -77,7 +77,6 @@ class Home_controller extends Component {
         ])
     }
     closeMyDrawer() {
-        console.log('Hello');
         if( typeof this.refs.drawer !== 'undefined' ){
             this.refs.drawer.closeDrawer();
         }

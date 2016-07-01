@@ -10,6 +10,6 @@
     "react": "15.1.0",
     "react-native": "0.28.0",
     "react-native-drawer-layout": "^1.0.0",
-    "react-native-popover": "git+https://github.com/jeanregisser/react-native-popover.git"
+    "react-native-image-picker": "^0.20.0"
   }
 }

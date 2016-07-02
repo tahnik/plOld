@@ -132,10 +132,10 @@ class Leak extends Component {
         )
     }
     submitPicture(imageID){
-        console.log(this.props.Token);
         var body = new FormData();
         body.append('image', {uri: this.state.imageSource , name: imageID.toString(), type: 'image/jpg'})
         body.append('token', this.props.Token);
+        console.log(body);
 
         fetch('https://piracyleak.com/user/leak/image', {
             method: 'POST',
@@ -190,7 +190,7 @@ class Leak extends Component {
         .then((response) => response.json())
         .then((responseText) => {
             console.log(responseText);
-            //this.submitPicture(responseText.imageID);
+            this.submitPicture(responseText.imageID);
         })
         .catch((error) => {
             console.warn(error);

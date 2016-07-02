@@ -79,6 +79,7 @@ class main extends Component {
                     }
                 })
                 .catch((error) => {
+                    console.log(error);
                     Alert.alert(
                         'No internet connection',
                         '',

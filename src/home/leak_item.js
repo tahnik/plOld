@@ -8,7 +8,6 @@ class leak_item extends Component {
         super(props);
     }
     render() {
-        console.log('hite');
         return (
             <View style={{ alignItems: 'center', width: width }}>
                 <View style={styles.container}>

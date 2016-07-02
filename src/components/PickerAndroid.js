@@ -18,7 +18,7 @@ class customButton extends Component {
                     style={{ height: 40 }}
                     selectedValue={ this.props.selectedMovie }
                     onValueChange={(movie) => this.props.selectMovie(movie) }>
-                    { this.props.list.map((e) => ( <Picker.Item key={e.id} label={e.value} value={e.id} /> ))}
+                    { this.props.list.map((e) => ( <Picker.Item key={e.id} label={e.value} value={e.id - 1} /> ))}
                 </Picker>
             </View>
         )

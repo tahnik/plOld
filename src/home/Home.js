@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
-import { AppRegistry, Navigator, View, Text, TouchableOpacity, StyleSheet, AsyncStorage, Dimensions, ScrollView } from 'react-native';
-import Authentication from '../authentication/authentication';
-import Home from '../home/home';
-import CreateLeak from '../home/leak';
+import { View, Text, TouchableOpacity, StyleSheet, AsyncStorage, Dimensions, ScrollView, Navigator, LayoutAnimation } from 'react-native';
 import DrawerLayout from 'react-native-drawer-layout';
+
+import TopNav from '../components/TopNav';
+
+import CreateLeak from './CreateLeak';
+import RecentLeaks from './RecentLeaks';
+
 var width = Dimensions.get('window').width;
 
-var HOME_ROUTES = {
-    authentication: Authentication,
-    home: Home,
-    createLeak: CreateLeak
-}
 
-class Home_controller extends Component {
+class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentRoute: 'home',
-            drawerOpen: false        }
+            currentRoute: RecentLeaks,
+            drawerOpen: false
+        }
+    }
+    componentWillUpdate() {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     }
     render() {
         var navigationView = (
@@ -39,6 +41,7 @@ class Home_controller extends Component {
                 </TouchableOpacity>
             </View>
         );
+        var HomeRouter = this.state.currentRoute;
         return (
             <View style={{ flex: 1 }}>
                 <DrawerLayout
@@ -46,23 +49,33 @@ class Home_controller extends Component {
                     drawerWidth={width * 0.7}
                     drawerPosition={DrawerLayout.positions.Left}
                     renderNavigationView={() => navigationView}>
-                    <Navigator
-                        initialRoute={{ name: this.state.currentRoute }}
-                        renderScene={(route, navigator) => this.navigate(route,navigator)}
-                        />
+                    <View style={{ flex: 1 }}>
+                        <TopNav onCreateTap={ () => this.onCreateTap() } onOpenDrawer={ () => this.onOpenDrawer() } />
+                        <HomeRouter currentRoute={this.state.currentRoute} Token={this.props.Token} Username={this.props.Username} />
+                    </View>
                 </DrawerLayout>
             </View>
         )
     }
     goToLeak() {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
         this.setState({
-            currentRoute: 'createLeak'
+            currentRoute: CreateLeak
         })
         this.closeMyDrawer();
     }
+    onCreateTap() {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        this.setState({
+            currentRoute: CreateLeak
+        })
+    }
+    onOpenDrawer(){
+        this.refs.drawer.openDrawer();
+    }
     goToHome() {
         this.setState({
-            currentRoute: 'home'
+            currentRoute: RecentLeaks
         })
         this.closeMyDrawer()
     }
@@ -84,10 +97,6 @@ class Home_controller extends Component {
             drawerOpen: false
         })
     }
-    navigate(route, navigator){
-        var ComponentToNavigate = HOME_ROUTES[this.state.currentRoute];
-        return <ComponentToNavigate title={route.name} navigator={navigator} Token={this.props.Token} Username={this.props.Username}/>
-    }
 }
 
 var styles = StyleSheet.create({
@@ -102,4 +111,4 @@ var styles = StyleSheet.create({
     }
 })
 
-export default Home_controller;
+export default Home;

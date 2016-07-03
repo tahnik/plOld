@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AppRegistry, Navigator, AsyncStorage, View, Text, Alert, StatusBar } from 'react-native';
 import Authentication from './src/authentication/authentication';
-import Home from './src/home/home_controller';
+import Home from './src/home/Home';
 
 var TOKEN = '';
 var USERNAME = '';

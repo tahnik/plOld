@@ -11,8 +11,6 @@ var width = Dimensions.get('window').width;
 class Leak extends Component {
     constructor(props) {
         super(props);
-        this.loadcity();
-        this.loadMovie();
         this.state = {
             movie: 0,
             city: 0,
@@ -22,6 +20,10 @@ class Leak extends Component {
             cityList: [],
             movieList: []
         }
+    }
+    componentDidMount() {
+        this.loadcity();
+        this.loadMovie();
     }
     loadcity () {
         fetch('https://piracyleak.com/city', {

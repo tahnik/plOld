@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { AppRegistry, Navigator, Text, View, AsyncStorage, ScrollView, StyleSheet } from 'react-native';
-import CurrentLeaks from '../home/current_leaks'
+import RecentLeakList from './RecentLeakList';
 
-class Home extends Component {
+class RecentLeaks extends Component {
     constructor(props){
         super(props);
         this.fetchTopLeak();
@@ -31,20 +31,11 @@ class Home extends Component {
         });
 
     }
-    //<Home_item leakid={ e.leadid } description={ e.description } location={ e.location } movie={ e.movie } />
     render() {
         return (
-            <CurrentLeaks leaks={ this.state.leakList } />
+            <RecentLeakList leaks={ this.state.leakList } />
         )
     }
 }
 
-var styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-        marginTop: 20
-    }
-})
-
-export default Home;
+export default RecentLeaks;

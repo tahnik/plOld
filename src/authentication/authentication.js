@@ -28,17 +28,14 @@ class Authentication extends Component {
                     initialRoute={{ name: 'signin' }}
                     renderScene={(route, navigator) => this.navigate(route,navigator)}
                     style={{ flex: 7 }}
-                    configureScene={() => Navigator.SceneConfigs.PushFromRight }
+                    configureScene={() => Navigator.SceneConfigs.HorizontalSwipeJump }
                     />
             </View>
         )
     }
     navigate(route, navigator){
         var ComponentToNavigate = AUTH_ROUTES[route.name];
-        if(route.name == 'signin' || route.name == 'signup'){
-            return <ComponentToNavigate title={route.name} navigator={navigator} setToken={ (token, username) => this.goToHome(token, username) } />
-        }
-        return <ComponentToNavigate title={route.name} navigator={navigator}/>
+        return <ComponentToNavigate title={route.name} navigator={navigator} setToken={ (token, username) => this.goToHome(token, username) } />
     }
     goToHome(token, username) {
         let tokenStorage = {
